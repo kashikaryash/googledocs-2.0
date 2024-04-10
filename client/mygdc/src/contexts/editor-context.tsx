@@ -1,5 +1,5 @@
 import { EditorState, Editor, convertToRaw, convertFromRaw, RawDraftContentState } from "draft-js";
-import { Dispatch, MutableRefObject, SetStateAction, createContext, useContext, useEffect, useRef, useState, } from "react";
+import { Dispatch, MutableRefObject, SetStateAction, createContext, useContext, useEffect, useRef, useState } from "react";
 import { FONTS } from "../components/atoms/font-select";
 import { DocumentContext } from "./document-context";
 import { ToastContext } from "./toast-context";
@@ -10,67 +10,61 @@ import { io } from "socket.io-client";
 import { BASE_URL } from "../services/api";
 
 interface EditorContextInterface {
-  editorState: EditorState;
-  setEditorState: Dispatch<SetStateAction<EditorState>>;
-  socket: null | MutableRefObject<any>;
-  documentRendered: boolean;
-  setDocumentRendered: Dispatch<SetStateAction<boolean>>;
-  editorRef: null | MutableRefObject<null | Editor>;
-  handleEditorChange: (editorState: EditorState) => void;
-  focusEditor: () => void;
-  currentFont: string;
-  setCurrentFont: Dispatch<SetStateAction<string>>;
+ editorState: EditorState;
+ setEditorState: Dispatch<SetStateAction<EditorState>>;
+ socket: null | MutableRefObject<any>;
+ documentRendered: boolean;
+ setDocumentRendered: Dispatch<SetStateAction<boolean>>;
+ editorRef: null | MutableRefObject<null | Editor>;
+ handleEditorChange: (editorState: EditorState) => void;
+ focusEditor: () => void;
+ currentFont: string;
+ setCurrentFont: Dispatch<SetStateAction<string>>;
 }
 
 const defaultValues = {
-  editorState: EditorState.createEmpty(),
-  setEditorState: () => { },
-  socket: null,
-  documentRendered: false,
-  setDocumentRendered: () => { },
-  editorRef: null,
-  handleEditorChange: () => { },
-  focusEditor: () => { },
-  currentFont: FONTS[0],
-  setCurrentFont: () => { },
+ editorState: EditorState.createEmpty(),
+ setEditorState: () => { },
+ socket: null,
+ documentRendered: false,
+ setDocumentRendered: () => { },
+ editorRef: null,
+ handleEditorChange: () => { },
+ focusEditor: () => { },
+ currentFont: FONTS[0],
+ setCurrentFont: () => { },
 };
 
-export const EditorContext =
-  createContext<EditorContextInterface>(defaultValues);
+export const EditorContext = createContext<EditorContextInterface>(defaultValues);
 
 interface EditorProviderInterface {
-  children: JSX.Element;
+ children: JSX.Element;
 }
-
-let saveInterval : null | NodeJS.Timer = null;
+const DEFAULT_SAVE_TIME = 1500;
+let saveInterval: number | null = null; // Adjusted to match browser environment
 
 export const EditorProvider = ({ children }: EditorProviderInterface) => {
-  const [editorState, setEditorState] = useState(defaultValues.editorState);
-  const socket = useRef<any>(defaultValues.socket);
-  const [documentRendered, setDocumentRendered] = useState(
-    defaultValues.documentRendered
-  );
-  const editorRef = useRef<null | Editor>(defaultValues.editorRef);
-  const [currentFont, setCurrentFont] = useState(defaultValues.currentFont);
+ const [editorState, setEditorState] = useState(defaultValues.editorState);
+ const socket = useRef<any>(defaultValues.socket);
+ const [documentRendered, setDocumentRendered] = useState(defaultValues.documentRendered);
+ const editorRef = useRef<null | Editor>(defaultValues.editorRef);
+ const [currentFont, setCurrentFont] = useState(defaultValues.currentFont);
 
-  const { document, setCurrentUsers, setSaving, setDocument, saveDocument } =
-    useContext(DocumentContext);
-  const { error } = useContext(ToastContext);
-  const { accessToken } = useAuth();
+ const { document, setCurrentUsers, setSaving, setDocument, saveDocument } = useContext(DocumentContext);
+ const { error } = useContext(ToastContext);
+ const { accessToken } = useAuth();
 
-  const focusEditor = () => {
-    if (editorRef === null || editorRef.current === null) return;
-
+ const focusEditor = () => {
+    if (editorRef.current === null) return;
     editorRef.current.focus();
-  };
+ };
 
-  const handleEditorChange = (editorState: EditorState) => {
+ const handleEditorChange = (editorState: EditorState) => {
     setEditorState(EditorState.moveSelectionToEnd(editorState));
 
-    if (socket === null) return;
+    if (socket.current === null) return;
 
     const content = convertToRaw(editorState.getCurrentContent());
-
     socket.current.emit(SocketEvent.SEND_CHANGES, content);
 
     const updatedDocument = {
@@ -80,29 +74,30 @@ export const EditorProvider = ({ children }: EditorProviderInterface) => {
 
     setDocument(updatedDocument);
 
-    if (document === null || JSON.stringify(content) === document.content)
-      return;
+    if (document === null || JSON.stringify(content) === document.content) return;
 
     setSaving(true);
-
-    if(saveInterval!=null){
+    if (saveInterval !== null) {
       clearInterval(saveInterval);
+      saveInterval = null; // Reset saveInterval to null after clearing
     }
 
-    saveInterval = setInterval(async() =>{
-      await saveDocument(updatedDocument)
-      if(saveInterval) clearInterval(saveInterval)
-    },1500)   
-  };
+    // Set a new interval
+    saveInterval = window.setInterval(async () => {
+      await saveDocument(updatedDocument);
+      // Clear the interval after saving
+      if (saveInterval !== null) {
+        clearInterval(saveInterval);
+        saveInterval = null; // Reset saveInterval to null after clearing
+      }
+    }, DEFAULT_SAVE_TIME);
+ };
 
-  useEffect(() => {
-    if (documentRendered || document === null || document.content === null)
-      return;
+ useEffect(() => {
+    if (documentRendered || document === null || document.content === null) return;
 
     try {
-      const contentState = convertFromRaw(
-        JSON.parse(document.content) as RawDraftContentState
-      );
+      const contentState = convertFromRaw(JSON.parse(document.content) as RawDraftContentState);
       const newEditorState = EditorState.createWithContent(contentState);
       setEditorState(EditorState.moveSelectionToEnd(newEditorState));
     } catch {
@@ -110,29 +105,23 @@ export const EditorProvider = ({ children }: EditorProviderInterface) => {
     } finally {
       setDocumentRendered(true);
     }
-  }, [document]);
+ }, [document]);
 
-  useEffect(() => {
-    if (
-      document === null ||
-      accessToken === null ||
-      socket === null ||
-      (socket.current !== null && socket.current.connected)
-    )
-      return;
+ useEffect(() => {
+    if (document === null || accessToken === null || socket.current !== null && socket.current.connected) return;
 
     socket.current = io(BASE_URL, {
       query: { documentId: document.id, accessToken },
     }).connect();
-  }, [document, socket, accessToken]);
+ }, [document, socket, accessToken]);
 
-  useEffect(() => {
+ useEffect(() => {
     return () => {
-      socket?.current?.disconnect();
+      socket.current?.disconnect();
     };
-  }, []);
+ }, []);
 
-  useEffect(() => {
+ useEffect(() => {
     if (socket.current === null) return;
 
     const handler = (rawDraftContentState: RawDraftContentState) => {
@@ -146,9 +135,9 @@ export const EditorProvider = ({ children }: EditorProviderInterface) => {
     return () => {
       socket.current.off(SocketEvent.RECEIVE_CHANGES, handler);
     };
-  }, [socket.current]);
+ }, [socket.current]);
 
-  useEffect(() => {
+ useEffect(() => {
     if (socket.current === null) return;
 
     const handler = (currentUsers: Array<string>) => {
@@ -160,9 +149,9 @@ export const EditorProvider = ({ children }: EditorProviderInterface) => {
     return () => {
       socket.current.off(SocketEvent.CURRENT_USERS_UPDATE, handler);
     };
-  }, [socket.current]);
+ }, [socket.current]);
 
-  return (
+ return (
     <EditorContext.Provider
       value={{
         editorState,
@@ -179,5 +168,5 @@ export const EditorProvider = ({ children }: EditorProviderInterface) => {
     >
       {children}
     </EditorContext.Provider>
-  );
+ );
 };
