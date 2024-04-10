@@ -1,3 +1,4 @@
+window.global ||= window;
 import { useContext } from "react";
 import { ToastContext } from "../../../contexts/toast-context";
 import useWindowSize from "../../../hook/use-window-size";

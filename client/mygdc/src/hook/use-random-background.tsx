@@ -1,3 +1,4 @@
+window.global ||= window;
 import { useEffect, useState } from "react";
 import { colors } from "../utils/constants";
 

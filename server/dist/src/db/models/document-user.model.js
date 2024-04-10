@@ -14,9 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DocumentUser = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
+const permission_enum_1 = __importDefault(require("../../types/enums/permission-enum"));
 const user_model_1 = require("./user.model");
 const document_model_1 = require("./document.model");
-const permission_enum_1 = __importDefault(require("../../types/enums/permission-enum"));
 let DocumentUser = class DocumentUser extends sequelize_typescript_1.Model {
 };
 exports.DocumentUser = DocumentUser;

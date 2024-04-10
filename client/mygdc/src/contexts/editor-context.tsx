@@ -1,3 +1,4 @@
+window.global ||= window;
 import { EditorState, Editor, convertToRaw, convertFromRaw, RawDraftContentState } from "draft-js";
 import { Dispatch, MutableRefObject, SetStateAction, createContext, useContext, useEffect, useRef, useState } from "react";
 import { FONTS } from "../components/atoms/font-select";

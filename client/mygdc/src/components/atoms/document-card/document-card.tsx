@@ -1,3 +1,4 @@
+window.global ||= window;
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../../hook/use-auth";
 import DocumentInterface from "../../../types/interfaces/document";

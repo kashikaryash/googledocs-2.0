@@ -1,3 +1,4 @@
+window.global ||= window;
 import DocumentInterface from "../types/interfaces/document";
 import API from "./api";
 

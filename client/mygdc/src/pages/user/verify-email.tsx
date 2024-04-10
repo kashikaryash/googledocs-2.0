@@ -1,3 +1,4 @@
+window.global ||= window;
 import { useContext, useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { ToastContext } from "../../contexts/toast-context";

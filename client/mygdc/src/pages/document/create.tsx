@@ -1,3 +1,4 @@
+window.global ||= window;
 import 'global';
 import CreateDocumentButton from "../../components/atoms/create-document-button/create-document-btn";
 import Spinner from "../../components/atoms/spinner/spinner";

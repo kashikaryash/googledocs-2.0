@@ -1,3 +1,4 @@
+window.global ||= window;
 import { MouseEvent, useContext } from "react";
 import ToastInterface from "../../../types/interfaces/toast";
 import { ToastContext } from "../../../contexts/toast-context";

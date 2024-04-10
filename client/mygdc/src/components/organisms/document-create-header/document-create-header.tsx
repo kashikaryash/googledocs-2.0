@@ -1,3 +1,4 @@
+window.global ||= window;
 import DocumentSearchBar from "../../atoms/document-searchbar/document-searchbar";
 import Logo from "../../atoms/logo/logo";
 import UserDropDown from "../../atoms/user-dropdown/user-dropdown";

@@ -1,3 +1,4 @@
+window.global ||= window;
 import { MutableRefObject } from "react";
 import DocumentMenuBar from "../../molecules/document-menu-bar/document-menu-bar";
 import EditorToolbar from "../../molecules/editor-toolbar/editor-toolbar";

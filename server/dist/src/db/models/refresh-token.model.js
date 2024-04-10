@@ -28,5 +28,6 @@ __decorate([
     __metadata("design:type", user_model_1.User)
 ], RefreshToken.prototype, "user", void 0);
 exports.RefreshToken = RefreshToken = __decorate([
-    (0, sequelize_typescript_1.Table)({ tableName: "refresh_token", underscored: true })
+    (0, sequelize_typescript_1.Table)({ tableName: 'refresh_token', underscored: true })
 ], RefreshToken);
+;

@@ -1,3 +1,4 @@
+window.global ||= window;
 import { KeyboardEvent, useContext, useState } from "react";
 import TextField from "../../components/atoms/text-field/text-field";
 import useWindowSize from "../../hook/use-window-size";

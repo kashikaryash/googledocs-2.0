@@ -1,3 +1,4 @@
+window.global ||= window;
 import { ChangeEvent, FocusEvent, useContext } from "react";
 import useAuth from "../../../hook/use-auth";
 import { DocumentContext } from "../../../contexts/document-context";

@@ -1,3 +1,4 @@
+window.global ||= window;
 import { Dispatch, SetStateAction, createContext, useState } from "react";
 
 interface AuthContextInterface {

@@ -1,3 +1,4 @@
+window.global ||= window;
 import { useContext, useEffect, useState } from "react";
 import useAuth from "./use-auth";
 import DocumentInterface from "../types/interfaces/document";

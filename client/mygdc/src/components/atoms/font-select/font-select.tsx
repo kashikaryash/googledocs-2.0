@@ -1,3 +1,4 @@
+window.global ||= window;
 import { useContext, useRef, useState } from "react";
 import { EditorContext } from "../../../contexts/editor-context";
 import { ChevronDownIcon } from "@heroicons/react/outline";

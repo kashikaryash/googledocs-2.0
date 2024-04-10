@@ -1,3 +1,4 @@
+window.global ||= window;
 import API from "./api";
 
 const AuthService = {
@@ -9,13 +10,13 @@ const AuthService = {
     password1: string;
     password2: string;
   }) => {
-    return API.post("user", payload);
+    return API.post("/user", payload);
   },
   refreshToken: (payload: { token: string }) => {
     return API.post("auth/refresh-token", payload);
   },
   logout: (accessToken: string) => {
-    return API.delete("auth/logiut", {
+    return API.delete("auth/logout", {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
   },

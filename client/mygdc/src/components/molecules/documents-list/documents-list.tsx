@@ -1,3 +1,4 @@
+window.global ||= window;
 import DocumentInterface from "../../../types/interfaces/document";
 import DocumentCard from "../../atoms/document-card/document-card";
 

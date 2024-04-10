@@ -1,3 +1,4 @@
+window.global ||= window;
 import { Dispatch, SetStateAction, useContext, useState } from "react";
 import DocumentUser from "../../../types/interfaces/document-user";
 import DocumentInterface from "../../../types/interfaces/document";

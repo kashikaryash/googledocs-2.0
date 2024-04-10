@@ -1,3 +1,4 @@
+window.global ||= window;
 import PermissionEnum from "../types/enums/permission-enum";
 import API from "./api";
 

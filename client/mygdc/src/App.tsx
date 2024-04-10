@@ -1,3 +1,4 @@
+window.global ||= window;
 import "./App.css";
 import 'global';
 function App() {

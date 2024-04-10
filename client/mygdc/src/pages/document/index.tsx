@@ -1,3 +1,4 @@
+window.global ||= window;
 import { useParams } from "react-router-dom";
 import useWindowSize from "../../hook/use-window-size";
 import useDocument from "../../hook/use-document";

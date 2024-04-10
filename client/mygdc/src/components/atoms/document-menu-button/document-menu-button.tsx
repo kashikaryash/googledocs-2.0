@@ -1,3 +1,4 @@
+window.global ||= window;
 import { FocusEvent, useContext, useRef, useState } from "react";
 import useAuth from "../../../hook/use-auth";
 import { ToastContext } from "../../../contexts/toast-context";

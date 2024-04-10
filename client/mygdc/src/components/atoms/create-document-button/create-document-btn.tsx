@@ -1,3 +1,4 @@
+window.global ||= window;
 import { lazy, useContext, useState } from "react";
 import { ToastContext } from "../../../contexts/toast-context";
 import useAuth from "../../../hook/use-auth";

@@ -1,3 +1,4 @@
+window.global ||= window;
 import { useContext } from "react";
 import { EditorContext } from "../../../contexts/editor-context";
 import { EditorState } from "draft-js";

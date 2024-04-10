@@ -1,3 +1,4 @@
+window.global ||= window;
 import { useContext, useState } from "react";
 import useWindowSize from "../../hook/use-window-size";
 import { Link, useNavigate } from "react-router-dom";
@@ -70,37 +71,38 @@ const Register = () => {
       });
       navigate("/login");
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        const { response } = err as AxiosError;
-        const errors = (response as any).data.errors;
-        const emailFieldErrors = errors
-          .filter((error: any) => error.param === "email")
-          .map((error: any) => error.msg);
-        const password1FieldErrors = errors
-          .filter((error: any) => error.param === "password1")
-          .map((error: any) => error.msg);
-        const password2FieldErrors = errors
-          .filter((error: any) => error.param === "password2")
-          .map((error: any) => error.msg);
+  if (axios.isAxiosError(err)) {
+    const { response } = err as AxiosError;
+    const errors = (response as any).data?.errors || [];
 
-        if (emailFieldErrors) setEmailErrors(emailFieldErrors);
-        if (password1FieldErrors) setPassword1Errors(password1FieldErrors);
-        if (password2FieldErrors) setPassword2Errors(password2FieldErrors);
+    const emailFieldErrors = errors
+      .filter((error: any) => error.param === "email")
+      .map((error: any) => error.msg);
+    const password1FieldErrors = errors
+      .filter((error: any) => error.param === "password1")
+      .map((error: any) => error.msg);
+    const password2FieldErrors = errors
+      .filter((error: any) => error.param === "password2")
+      .map((error: any) => error.msg);
 
-        if (
-          !emailFieldErrors &&
-          !password1FieldErrors &&
-          !password2FieldErrors
-        ) {
-          error("An unknown error has occured. Please try again");
-        }
-      } else {
-        error("An unknown error has occured. Please try again");
-      }
-    } finally {
-      setLoading(false);
+    setEmailErrors(emailFieldErrors);
+    setPassword1Errors(password1FieldErrors);
+    setPassword2Errors(password2FieldErrors);
+
+    if (
+      emailFieldErrors.length === 0 &&
+      password1FieldErrors.length === 0 &&
+      password2FieldErrors.length === 0
+    ) {
+      error("An unknown error has occurred. Please try again");
     }
-  };
+  } else {
+    error("An unknown error has occurred. Please try again");
+  }
+} finally {
+  setLoading(false);
+}
+  }
 
 
   const handleOnInputEmail = (value: string) => {

@@ -1,3 +1,4 @@
+window.global ||= window;
 import { useEffect } from "react";
 import useAuth from "../../../hook/use-auth";
 import { Navigate } from "react-router-dom";

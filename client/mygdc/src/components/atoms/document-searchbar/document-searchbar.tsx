@@ -1,3 +1,4 @@
+window.global ||= window;
 import { SearchIcon } from "@heroicons/react/outline";
 import { useState } from "react";
 

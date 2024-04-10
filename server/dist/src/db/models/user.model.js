@@ -16,6 +16,10 @@ const role_model_1 = require("./role.model");
 const user_role_model_1 = require("./user-role.model");
 const document_user_model_1 = require("./document-user.model");
 let User = class User extends sequelize_typescript_1.Model {
+    constructor() {
+        super(...arguments);
+        this.refreshTokens = (Array);
+    }
 };
 exports.User = User;
 __decorate([
@@ -40,9 +44,9 @@ __decorate([
 ], User.prototype, "passwordResetToken", void 0);
 __decorate([
     (0, sequelize_typescript_1.HasMany)(() => refresh_token_model_1.RefreshToken, {
-        onDelete: "CASCADE",
+        onDelete: 'CASCADE'
     }),
-    __metadata("design:type", Array)
+    __metadata("design:type", Object)
 ], User.prototype, "refreshTokens", void 0);
 __decorate([
     (0, sequelize_typescript_1.BelongsToMany)(() => role_model_1.Role, {
@@ -76,5 +80,5 @@ exports.User = User = __decorate([
             ],
         },
     })),
-    (0, sequelize_typescript_1.Table)({ tableName: "user", underscored: true })
+    (0, sequelize_typescript_1.Table)({ tableName: 'user', underscored: true })
 ], User);

@@ -5,22 +5,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
 const env_config_1 = __importDefault(require("./env.config"));
-let sequelize;
-if (env_config_1.default.NODE_ENV === "test" || env_config_1.default.NODE_ENV === "development") {
-    sequelize = new sequelize_typescript_1.Sequelize({
-        database: "gd",
-        username: "postgres",
-        password: "admin",
-        host: "localhost",
+const sequelize = env_config_1.default.NODE_ENV === "test" || env_config_1.default.NODE_ENV === "development"
+    ? new sequelize_typescript_1.Sequelize("mygd", "postgres", "yash", {
+        host: env_config_1.default.DB_HOST,
         dialect: "postgres",
         logging: false,
-    });
-}
-else {
-    if (!env_config_1.default.DATABASE_URL) {
-        throw new Error("DATABASE_URL is not defined in environment variables.");
-    }
-    sequelize = new sequelize_typescript_1.Sequelize(env_config_1.default.DATABASE_URL, {
+        dialectModule: require('pg'),
+    })
+    : new sequelize_typescript_1.Sequelize(env_config_1.default.DATABASE_URL, {
         dialect: "postgres",
         dialectOptions: {
             ssl: {
@@ -29,6 +21,6 @@ else {
             },
         },
         logging: false,
+        dialectModule: require('pg'),
     });
-}
 exports.default = sequelize;

@@ -1,3 +1,4 @@
+window.global ||= window;
 import { useState } from "react";
 
 interface IconButtonProps {

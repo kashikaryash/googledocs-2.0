@@ -1,3 +1,4 @@
+window.global ||= window;
 import { Link } from "react-router-dom";
 
 const Logo = () => {

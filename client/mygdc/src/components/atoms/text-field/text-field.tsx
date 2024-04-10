@@ -1,3 +1,4 @@
+window.global ||= window;
 import { useEffect, useRef, useState } from "react";
 import InputProps from "../../../types/interfaces/input";
 import InputMask from "inputmask";

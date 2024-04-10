@@ -1,3 +1,4 @@
+window.global ||= window;
 import { createContext, useState } from "react";
 import ActionInterface from "../types/interfaces/action";
 import ToastInterface from "../types/interfaces/toast";
