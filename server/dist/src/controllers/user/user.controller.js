@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userController = void 0;
+// import { validationResult } from "express-validator";
 const express_validator_1 = require("express-validator");
 const catch_async_1 = __importDefault(require("../../middleware/catch-async"));
 const user_service_1 = require("../../services/user.service");

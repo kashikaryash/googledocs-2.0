@@ -5,9 +5,9 @@ const transporter = createTransport({
   host: "smtp.gmail.com",
   auth: {
     user: "kashikaryash@gmail.com",
-    pass: "Yash@9844",
+    pass: "lyizepymrfidgreo",
   },
-  secure: true,
+  secure: false,
 });
 
 export default transporter;

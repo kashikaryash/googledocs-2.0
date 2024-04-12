@@ -27,30 +27,30 @@ class UserService {
         this.createUser = (email, password) => __awaiter(this, void 0, void 0, function* () {
             const salt = yield (0, bcrypt_1.genSalt)();
             const hashedPassword = yield (0, bcrypt_1.hash)(password, salt);
-            const verificationToken = jsonwebtoken_1.default.sign({ email }, "verify_email");
+            const secret = 'verify_secret';
+            const verificationToken = jsonwebtoken_1.default.sign({ email }, secret);
             const user = yield user_model_1.User.create({
                 email: email,
                 password: hashedPassword,
                 verificationToken: verificationToken,
             });
-            //call method to send verification email
             yield this.sendVerificationEmail(user);
         });
         this.sendVerificationEmail = (user) => __awaiter(this, void 0, void 0, function* () {
             const mail = {
-                from: "kuluruvineeth8623@gmail.com",
+                from: "kashikaryash@gmail.com",
                 to: user.email,
                 subject: "Welcome to Google Docs",
-                text: `click the following link to verify your email : http://localhost:3000/user/verify-email/${user.verificationToken}`,
+                text: `click the following link to verify your email : http://localhost:5173/user/verify-email/${user.verificationToken}`,
             };
             yield mail_service_1.mailservice.sendMail(mail);
         });
         this.sendPasswordResetEmail = (user) => __awaiter(this, void 0, void 0, function* () {
             const mail = {
-                from: "kuluruvineeth8623@gmail.com",
+                from: "kashikaryash@gmail.com",
                 to: user.email,
                 subject: "Reset your password!",
-                text: `http://localhost:3000/user/reset-email/${user.passwordResetToken}`,
+                text: `http://localhost:5173/user/reset-email/${user.passwordResetToken}`,
             };
             yield mail_service_1.mailservice.sendMail(mail);
         });

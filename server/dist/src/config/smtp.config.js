@@ -6,8 +6,8 @@ const transporter = (0, nodemailer_1.createTransport)({
     host: "smtp.gmail.com",
     auth: {
         user: "kashikaryash@gmail.com",
-        pass: "Yash@9844",
+        pass: "lyizepymrfidgreo",
     },
-    secure: true,
+    secure: false,
 });
 exports.default = transporter;

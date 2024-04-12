@@ -7,7 +7,8 @@
     "serve": "NODE_ENV=development node dist/src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "NODE_ENV=development node dist/src/server.js"
+    "start": "NODE_ENV=development node dist/src/server.js",
+    "dev": "NODE_ENV=development concurrently \"npx tsc --watch\" \"nodemon -q dist/src/server.js\""
   },
   "keywords": [],
   "author": "",
@@ -30,10 +31,12 @@
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/express-validator": "^3.0.0",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.11.30",
     "@types/nodemailer": "^6.4.14",
     "@types/sequelize": "^4.28.20",
+    "concurrently": "^8.2.2",
     "nodemon": "^3.1.0",
     "sequelize-cli": "^6.6.2",
     "typescript": "^5.4.2"

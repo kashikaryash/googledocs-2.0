@@ -23,5 +23,7 @@ const env = {
     DB_HOST: process.env.DB_PORT,
     DB_PORT: process.env.DB_PORT,
     DATABASE: process.env.DATABASE,
+    MAIL_HOST: process.env.MAIL_HOST,
+    MAIL_PORT: process.env.MAIL_PORT
 };
 exports.default = env;

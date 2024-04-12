@@ -6,7 +6,7 @@ import validator from "validator";
 import AuthService from "../../services/auth-service";
 import useAuth from "../../hook/use-auth";
 import { ToastContext } from "../../contexts/toast-context";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../components/atoms/logo/logo";
 
 const Login = () => {
@@ -71,10 +71,10 @@ const Login = () => {
   return (
     <div
       onKeyPress={handleOnKeyPress}
-      className="w-full flex flex-col sm:justify-center items-center p-6 sm:pb-96 bg-gray-100 dark:bg-slate-900 text-primary"
-      style={{ width: widthStr, height: heightStr }}
+      className="flex flex-col justify-center items-center p-6 sm:pb-96 overflow-y-hidden dark:bg-slate-900 text-black h-[100vh] w-[100vw]"
+    style={{ width: widthStr, height: heightStr, backgroundImage: "url('https://wallpapercave.com/wp/wp5730951.png')", backgroundPosition: "center", backgroundRepeat: "no-repeat", backgroundSize: "cover", }}
     >
-      <div className="w-full max-w-sm bg-white dark:bg-slate-800 rounded border-primary shadow-md border dark:border-0 dark:shadow-xl p-6">
+      <div className="w-full max-w-sm white-blur-glass shadow-2xl rounded-2xl dark:bg-slate-800 border-primary border dark:border-0 dark:shadow-xl p-6 mt-[250px]">
         <div className="flex flex-col space-y-4">
           <div className="w-full text-center flex flex-col justify-center items-center">
             <Logo />
@@ -89,7 +89,8 @@ const Login = () => {
             errors={emailErrors}
           />
           <p className="text-sm hover:underline font-semibold text-blue-500 text-left">
-            Need an account? - router to register
+            <Link to="/register"
+            className="text-sm hover:underline font-semibold text-blue-500 text-left">Need an account? - router to register</Link>
           </p>
           <TextField
             value={password}

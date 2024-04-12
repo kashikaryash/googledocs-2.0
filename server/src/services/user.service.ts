@@ -14,23 +14,23 @@ class UserService {
   public createUser = async (email: string, password: string) => {
     const salt = await genSalt();
     const hashedPassword = await hash(password, salt);
-    const verificationToken = jwt.sign({ email }, "verify_email");
+    const secret = 'verify_secret';
+    const verificationToken = jwt.sign({ email }, secret);
     const user = await User.create({
       email: email,
       password: hashedPassword,
       verificationToken: verificationToken,
     });
 
-    //call method to send verification email
     await this.sendVerificationEmail(user);
   };
 
   private sendVerificationEmail = async (user: User) => {
     const mail = {
-      from: "kuluruvineeth8623@gmail.com",
+      from: "kashikaryash@gmail.com",
       to: user.email,
       subject: "Welcome to Google Docs",
-      text: `click the following link to verify your email : http://localhost:3000/user/verify-email/${user.verificationToken}`,
+      text: `click the following link to verify your email : http://localhost:5173/user/verify-email/${user.verificationToken}`,
     };
 
     await mailservice.sendMail(mail);
@@ -38,10 +38,10 @@ class UserService {
 
   public sendPasswordResetEmail = async (user: User) => {
     const mail = {
-      from: "kuluruvineeth8623@gmail.com",
+      from: "kashikaryash@gmail.com",
       to: user.email,
       subject: "Reset your password!",
-      text: `http://localhost:3000/user/reset-email/${user.passwordResetToken}`,
+      text: `http://localhost:5173/user/reset-email/${user.passwordResetToken}`,
     };
 
     await mailservice.sendMail(mail);
