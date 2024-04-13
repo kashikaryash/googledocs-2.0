@@ -19,10 +19,4 @@ app.use(routes_1.default);
 app.use(error_handler_1.default);
 const port = 8080;
 models_1.default.sequelize.sync();
-// app.get("/", (req: Request, res: Response) => {
-//   res.send("Express + Typescript server11111");
-// });
-// app.listen(port, () => {
-//   console.log(`server is listening on port : ${port}`);
-// });
 exports.default = app;

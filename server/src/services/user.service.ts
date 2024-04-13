@@ -14,8 +14,7 @@ class UserService {
   public createUser = async (email: string, password: string) => {
     const salt = await genSalt();
     const hashedPassword = await hash(password, salt);
-    const secret = 'verify_secret';
-    const verificationToken = jwt.sign({ email }, secret);
+    const verificationToken = jwt.sign({ email }, "verify_email");
     const user = await User.create({
       email: email,
       password: hashedPassword,

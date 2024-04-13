@@ -21,7 +21,6 @@ ReactDOM.render(
       <AuthProvider>
         <ToastProvider>
           <Routes>
-            <Route path='/' element={<h1>Home Page</h1>} />
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />
             <Route path="/user/verify-email/:token" element={<VerifyEmail />} />

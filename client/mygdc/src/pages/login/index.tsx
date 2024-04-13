@@ -90,7 +90,7 @@ const Login = () => {
           />
           <p className="text-sm hover:underline font-semibold text-blue-500 text-left">
             <Link to="/register"
-            className="text-sm hover:underline font-semibold text-blue-500 text-left">Need an account? - router to register</Link>
+            className="text-sm hover:underline font-semibold text-blue-500 text-left">Need an account?</Link>
           </p>
           <TextField
             value={password}

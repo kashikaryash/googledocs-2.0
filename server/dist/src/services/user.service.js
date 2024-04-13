@@ -27,8 +27,7 @@ class UserService {
         this.createUser = (email, password) => __awaiter(this, void 0, void 0, function* () {
             const salt = yield (0, bcrypt_1.genSalt)();
             const hashedPassword = yield (0, bcrypt_1.hash)(password, salt);
-            const secret = 'verify_secret';
-            const verificationToken = jsonwebtoken_1.default.sign({ email }, secret);
+            const verificationToken = jsonwebtoken_1.default.sign({ email }, "verify_email");
             const user = yield user_model_1.User.create({
                 email: email,
                 password: hashedPassword,

@@ -1,4 +1,3 @@
-// import { validationResult } from "express-validator";
 import {validationResult} from "express-validator";
 import catchAsync from "../../middleware/catch-async";
 import { Request, Response } from "express";
@@ -48,40 +47,24 @@ class UserController {
   public verifyEmail = catchAsync(async (req: Request, res: Response) => {
     const verificationToken = req.params.token;
 
-    jwt.verify(
-      verificationToken,
-      "verify_email",
-      async (err: VerifyErrors | null, decoded: unknown) => {
-        if (err) return res.sendStatus(403);
-        try {
-          const { email } = decoded as { email: string };
+    try {
+        const decoded = await jwt.verify(verificationToken, "verify_email") as { email: string };
 
-          userService
-            .findUserByVerificationToken(email, verificationToken)
-            .then((user) => {
-              if (!user || user.isVerified) {
-                return res.sendStatus(400);
-              }
-
-              userService
-                .updateIsVerified(user, true)
-                .then(() => {
-                  return res.sendStatus(200);
-                })
-                .catch(() => {
-                  return res.sendStatus(500);
-                });
-            })
-            .catch(() => {
-              return res.sendStatus(500);
-            });
-        } catch (error) {
-          console.log(error);
-          return res.sendStatus(403);
+        const user = await userService.findUserByVerificationToken(decoded.email, verificationToken);
+        
+        if (!user || user.isVerified) {
+            return res.sendStatus(400); // Bad request if user not found or already verified
         }
-      }
-    );
-  });
+
+        await userService.updateIsVerified(user, true);
+        
+        return res.sendStatus(200); // Success
+    } catch (error) {
+        console.error("Error verifying email:", error);
+        return res.sendStatus(403); // Forbidden for invalid tokens or other errors
+    }
+});
+
 
   public confirmResetPassword = catchAsync(
     async (req: Request, res: Response) => {

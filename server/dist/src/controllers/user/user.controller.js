@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userController = void 0;
-// import { validationResult } from "express-validator";
 const express_validator_1 = require("express-validator");
 const catch_async_1 = __importDefault(require("../../middleware/catch-async"));
 const user_service_1 = require("../../services/user.service");
@@ -51,35 +50,19 @@ class UserController {
         }));
         this.verifyEmail = (0, catch_async_1.default)((req, res) => __awaiter(this, void 0, void 0, function* () {
             const verificationToken = req.params.token;
-            jsonwebtoken_1.default.verify(verificationToken, "verify_email", (err, decoded) => __awaiter(this, void 0, void 0, function* () {
-                if (err)
-                    return res.sendStatus(403);
-                try {
-                    const { email } = decoded;
-                    user_service_1.userService
-                        .findUserByVerificationToken(email, verificationToken)
-                        .then((user) => {
-                        if (!user || user.isVerified) {
-                            return res.sendStatus(400);
-                        }
-                        user_service_1.userService
-                            .updateIsVerified(user, true)
-                            .then(() => {
-                            return res.sendStatus(200);
-                        })
-                            .catch(() => {
-                            return res.sendStatus(500);
-                        });
-                    })
-                        .catch(() => {
-                        return res.sendStatus(500);
-                    });
+            try {
+                const decoded = yield jsonwebtoken_1.default.verify(verificationToken, "verify_email");
+                const user = yield user_service_1.userService.findUserByVerificationToken(decoded.email, verificationToken);
+                if (!user || user.isVerified) {
+                    return res.sendStatus(400); // Bad request if user not found or already verified
                 }
-                catch (error) {
-                    console.log(error);
-                    return res.sendStatus(403);
-                }
-            }));
+                yield user_service_1.userService.updateIsVerified(user, true);
+                return res.sendStatus(200); // Success
+            }
+            catch (error) {
+                console.error("Error verifying email:", error);
+                return res.sendStatus(403); // Forbidden for invalid tokens or other errors
+            }
         }));
         this.confirmResetPassword = (0, catch_async_1.default)((req, res) => __awaiter(this, void 0, void 0, function* () {
             const err = (0, express_validator_1.validationResult)(req);
