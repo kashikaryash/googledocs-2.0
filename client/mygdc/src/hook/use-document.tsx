@@ -44,7 +44,7 @@ const useDocument = (documentId: number) => {
     if (accessToken === null) return;
 
     loadDocument(accessToken, documentId);
-  }, [accessToken, documentId, error]); // Added 'error' to the dependency array
+  }, [accessToken, documentId, error]);
 
   useEffect(() => {
     if (errors.length) {
@@ -52,8 +52,7 @@ const useDocument = (documentId: number) => {
         error(err);
       });
     }
-  }, [errors, error]); // Added 'error' to the dependency array
-
+  }, [errors, error]); 
   return {
     document,
     errors,
