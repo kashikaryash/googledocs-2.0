@@ -1,6 +1,6 @@
 window.global ||= window;
 import { useContext } from "react";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { AuthContext } from "../contexts/auth-context";
 import useLocalStorage from "./use-local-storage";
 import Token from "../types/interfaces/token";
@@ -45,11 +45,11 @@ const useAuth = () => {
     if (!accessToken) return;
     try {
       await AuthService.logout(accessToken);
-    } catch {
     } finally {
       destroyAuth();
     }
   };
+
 
   const silentRefresh = (exp: number) => {
     const msExpiration = Math.abs(
