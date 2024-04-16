@@ -86,7 +86,7 @@ import {
           error(err);
         });
       }
-    }, [errors]);
+    }, [error, errors]);
   
     return (
       <DocumentContext.Provider
