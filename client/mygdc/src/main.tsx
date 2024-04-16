@@ -27,8 +27,8 @@ createRoot(rootElement).render(
       <AuthProvider>
         <ToastProvider>
           <Routes>
-            <Route path='/register' element={<Register />} />
-            <Route path='/' element={<Login />} />
+            <Route path='/' element={<Register />} />
+            <Route path='/login' element={<Login />} />
             <Route path="/user/verify-email/:token" element={<VerifyEmail />} />
             <Route
               path="/document/create"

@@ -93,6 +93,8 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({
       <label htmlFor="icon-button-file">
         <IconButton component="span"><ImageIcon /></IconButton>
       </label>
+      {/* <ChromePicker className="" onChange={(color) => handleTextColorChange(color.hex)} />
+      <ChromePicker onChange={(color) => handleTextBackgroundColorChange(color.hex)} /> */}
       <Select onChange={(e) => handleFontSizeSelect(e)} defaultValue="12">
         <MenuItem value="12">12</MenuItem>
         <MenuItem value="14">14</MenuItem>
