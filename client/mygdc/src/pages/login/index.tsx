@@ -1,10 +1,10 @@
 window.global ||= window;
 import { KeyboardEvent, useContext, useState } from "react";
 import TextField from "../../components/atoms/text-field/text-field";
-import useWindowSize from "../../hook/use-window-size";
+import useWindowSize from "../../hooks/use-window-size";
 import validator from "validator";
 import AuthService from "../../services/auth-service";
-import useAuth from "../../hook/use-auth";
+import useAuth from "../../hooks/use-auth";
 import { ToastContext } from "../../contexts/toast-context";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../components/atoms/logo/logo";

@@ -3,7 +3,7 @@ import { Dispatch, MutableRefObject, SetStateAction, createContext, useContext, 
 import { FONTS } from "../components/atoms/font-select";
 import { DocumentContext } from "./document-context";
 import { ToastContext } from "./toast-context";
-import useAuth from "../hook/use-auth";
+import useAuth from "../hooks/use-auth";
 import SocketEvent from "../types/enums/socket-events-enum";
 import DocumentInterface from "../types/interfaces/document";
 import { io, Socket } from "socket.io-client";

@@ -1,12 +1,12 @@
 window.global ||= window;
-import { lazy, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { ToastContext } from "../../../contexts/toast-context";
-import useAuth from "../../../hook/use-auth";
 import { useNavigate } from "react-router-dom";
 import DocumentService from "../../../services/document-service";
 import DocumentInterface from "../../../types/interfaces/document";
 import { PlusIcon } from "@heroicons/react/outline";
 import Spinner from "../spinner/spinner";
+import useAuth from "../../../hooks/use-auth";
 
 const CreateDocumentButton = () => {
   const { error } = useContext(ToastContext);

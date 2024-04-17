@@ -1,16 +1,16 @@
-window.global ||= window;
+window.global ||=global;
+import { useRef, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import useWindowSize from "../../hook/use-window-size";
-import useDocument from "../../hook/use-document";
+import useWindowSize from "../../hooks/use-window-size";
+import useDocument from "../../hooks/use-document";
 import DocumentHeader from "../../components/organisms/document-header/document-header";
-import { useContext, useEffect, useRef, useState } from "react";
-import { DocumentContext } from "../../contexts/document-context";
 import DocumentEditor from "../../components/organisms/document-editor/document-editor";
+import { DocumentContext } from "../../contexts/document-context";
 
 const Document = () => {
   const { heightStr, widthStr } = useWindowSize();
   const { id: documentId } = useParams();
-  const documentHeaderRef = useRef<null | HTMLDivElement>(null);
+  const documentHeaderRef = useRef<HTMLDivElement>(null);
   const { document, errors, loading } = useDocument(parseInt(documentId as string));
   const { setDocument } = useContext(DocumentContext);
   const [isLoading, setIsLoading] = useState(true);
@@ -33,10 +33,7 @@ const Document = () => {
   }
 
   return (
-    <div
-      style={{ height: heightStr }}
-      className="w-full h-full bg-gray flex flex-col"
-    >
+    <div style={{ height: heightStr }} className="w-full h-full bg-gray flex flex-col">
       <>
         <DocumentHeader documentHeaderRef={documentHeaderRef} />
         <div

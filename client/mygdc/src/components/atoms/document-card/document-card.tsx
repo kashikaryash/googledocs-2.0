@@ -1,13 +1,15 @@
 window.global ||= window;
 import { useNavigate } from "react-router-dom";
-import useAuth from "../../../hook/use-auth";
+import useAuth from "../../../hooks/use-auth";
 import DocumentInterface from "../../../types/interfaces/document";
 import { MouseEvent } from "react";
 import DocumentMenuButton from "../document-menu-button/document-menu-button";
 
+type SetDocumentsFunction = (documents: DocumentInterface[]) => void;
+
 interface DocumentCardProps {
   document: DocumentInterface;
-  setDocuments: Function;
+  setDocuments: SetDocumentsFunction;
 }
 
 const DocumentCard = ({ document, setDocuments }: DocumentCardProps) => {
@@ -29,15 +31,14 @@ const DocumentCard = ({ document, setDocuments }: DocumentCardProps) => {
 
   const skeleton = (
     <>
-      {Array.from({ length: 18 }, (x,i) => i).map((i) => {
-        return (
-          <div
-            key={i}
-            style={{ width: `${Math.floor(Math.random() * 100)}%` }}
-            className="h-1 bg-gray-200"
-          ></div>
-        );
-      })}
+      {Array.from({ length: 18 }, (_, i) => (
+  <div
+    key={`skeleton-${i}`}
+    style={{ width: `${Math.floor(Math.random() * 100)}%` }}
+    className="h-1 bg-gray-200"
+  ></div>
+))}
+
     </>
   );
 

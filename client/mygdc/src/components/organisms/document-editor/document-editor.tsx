@@ -39,8 +39,8 @@ const DocumentEditor = () => {
     </div>
     {bot && 
     
-    <div className=" p-5 flex justify-center flex-1  ">
-      <div className=" w-[80%] blue-blur-glass h-[500px] rounded-xl p-3 flex flex-col justify-center">
+    <div className=" absolute right-3 z-10 p-5 flex justify-center flex-1  ">
+      <div className=" w-[350px] blue-blur-glass h-[500px] rounded-xl p-3 flex flex-col justify-center">
         
         <div className="bg-white text-black rounded-xl shadow-xl h-[80%] overflow-y-scroll text-xl font-mono p-3">
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ducimus et, quidem perspiciatis nihil dicta sequi excepturi, aut aperiam nesciunt qui aspernatur maiores nostrum ipsa unde culpa quae esse placeat doloremque obcaecati ad. Nemo.s

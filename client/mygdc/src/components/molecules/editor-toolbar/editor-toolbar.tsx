@@ -1,23 +1,17 @@
-import React from "react";
-import FormatBoldIcon from "@material-ui/icons/FormatBold";
-import FormatItalicIcon from "@material-ui/icons/FormatItalic";
-import FormatUnderlinedIcon from "@material-ui/icons/FormatUnderlined";
-import StrikethroughSIcon from "@material-ui/icons/StrikethroughS";
-import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
-import FormatListNumberedIcon from "@material-ui/icons/FormatListNumbered";
-import ImageIcon from "@material-ui/icons/Image";
-import FormatAlignLeftIcon from "@material-ui/icons/FormatAlignLeft";
-import FormatAlignCenterIcon from "@material-ui/icons/FormatAlignCenter";
-import FormatAlignRightIcon from "@material-ui/icons/FormatAlignRight";
-import FormatAlignJustifyIcon from "@material-ui/icons/FormatAlignJustify";
-import UndoIcon from "@material-ui/icons/Undo";
-import RedoIcon from "@material-ui/icons/Redo";
-import CodeIcon from "@material-ui/icons/Code";
-import FormatQuoteIcon from "@material-ui/icons/FormatQuote";
-import { IconButton, Select, MenuItem } from "@material-ui/core";
-// import { ChromePicker } from "react-color";
+import React, { useState } from "react";
+import {
+  IconButton,
+  Select,
+  MenuItem,
+  FormControl,
+  Tooltip,
+} from "@material-ui/core";
+import { Image } from "@material-ui/icons";
+import Quill from "quill";
+import "quill/dist/quill.snow.css";
 
 interface EditorToolbarProps {
+  quill: Quill;
   handleBoldClick: () => void;
   handleItalicClick: () => void;
   handleUnderlineClick: () => void;
@@ -25,91 +19,98 @@ interface EditorToolbarProps {
   handleBulletListClick: () => void;
   handleNumberedListClick: () => void;
   handleInsertImage: (imageUrl: string) => void;
-  handleTextColor: (color: string) => void;
-  handleTextBackgroundColor: (color: string) => void;
-  handleFontSizeChange: (newFontSize: number) => void;
+  handleFontSizeChange: (newFontSize: string) => void;
   handlePageAlignment: (alignment: "left" | "center" | "right" | "justify") => void;
-  handleUndoBtnClick: () => void;
-  handleRedoBtnClick: () => void;
-  handleInlineStyleToggle: (inlineStyle: string) => void;
-  handleBlockTypeToggle: (blockType: string) => void;
 }
 
-const EditorToolbar: React.FC<EditorToolbarProps> = ({
-  handleBoldClick,
-  handleItalicClick,
-  handleUnderlineClick,
-  handleStrikethroughClick,
-  handleBulletListClick,
-  handleNumberedListClick,
-  handleInsertImage,
-  // handleTextColor,
-  // handleTextBackgroundColor,
-  handleFontSizeChange,
-  handlePageAlignment,
-  handleUndoBtnClick,
-  handleRedoBtnClick,
-  handleInlineStyleToggle,
-  handleBlockTypeToggle,
-}) => {
+const EditorToolbar: React.FC<EditorToolbarProps> = ({ quill, handleBoldClick, handleItalicClick, handleUnderlineClick, handleStrikethroughClick}) => {
+  const [fontSize, setFontSize] = useState("12px");
+
+  const handleFontSizeChange = (e: React.ChangeEvent<{ value: unknown }>) => {
+    const size = e.target.value as string;
+    quill.format("size", size);
+    setFontSize(size);
+  };
+
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         const imageUrl = reader.result as string;
-        handleInsertImage(imageUrl);
+        const range = quill.getSelection();
+        quill.insertEmbed(range?.index || 0, "image", imageUrl);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  // const handleTextColorChange = (color: string) => {
-  //   handleTextColor(color);
-  // };
-
-  // const handleTextBackgroundColorChange = (color: string) => {
-  //   handleTextBackgroundColor(color);
-  // };
-
-  const handleAlignmentChange = (alignment: "left" | "center" | "right" | "justify") => {
-    handlePageAlignment(alignment);
-  };
-
-  const handleFontSizeSelect = (event: React.ChangeEvent<{ value: unknown }>) => {
-    const newFontSize = Number(event.target.value as string);
-    handleFontSizeChange(newFontSize);
+  const handleAlignment = (align: string) => {
+    quill.format("align", align);
   };
 
   return (
     <div>
-      <IconButton onClick={handleBoldClick}><FormatBoldIcon /></IconButton>
-      <IconButton onClick={handleItalicClick}><FormatItalicIcon /></IconButton>
-      <IconButton onClick={handleUnderlineClick}><FormatUnderlinedIcon /></IconButton>
-      <IconButton onClick={handleStrikethroughClick}><StrikethroughSIcon /></IconButton>
-      <IconButton onClick={handleBulletListClick}><FormatListBulletedIcon /></IconButton>
-      <IconButton onClick={handleNumberedListClick}><FormatListNumberedIcon /></IconButton>
-      <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: "none" }} id="icon-button-file" />
-      <label htmlFor="icon-button-file">
-        <IconButton component="span"><ImageIcon /></IconButton>
-      </label>
-      {/* <ChromePicker className="" onChange={(color) => handleTextColorChange(color.hex)} />
-      <ChromePicker onChange={(color) => handleTextBackgroundColorChange(color.hex)} /> */}
-      <Select onChange={(e) => handleFontSizeSelect(e)} defaultValue="12">
-        <MenuItem value="12">12</MenuItem>
-        <MenuItem value="14">14</MenuItem>
-        <MenuItem value="16">16</MenuItem>
-        <MenuItem value="18">18</MenuItem>
-        <MenuItem value="20">20</MenuItem>
-      </Select>
-      <IconButton onClick={() => handleAlignmentChange("left")}><FormatAlignLeftIcon /></IconButton>
-      <IconButton onClick={() => handleAlignmentChange("center")}><FormatAlignCenterIcon /></IconButton>
-      <IconButton onClick={() => handleAlignmentChange("right")}><FormatAlignRightIcon /></IconButton>
-      <IconButton onClick={() => handleAlignmentChange("justify")}><FormatAlignJustifyIcon /></IconButton>
-      <IconButton onClick={handleUndoBtnClick}><UndoIcon /></IconButton>
-      <IconButton onClick={handleRedoBtnClick}><RedoIcon /></IconButton>
-      <IconButton onClick={() => handleInlineStyleToggle("code")}><CodeIcon /></IconButton>
-      <IconButton onClick={() => handleBlockTypeToggle("blockquote")}><FormatQuoteIcon /></IconButton>
+      <Tooltip title="Bold">
+        <IconButton onClick={handleBoldClick}>
+          <span style={{ fontWeight: "bold" }}>B</span>
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Italic">
+        <IconButton onClick={handleItalicClick}>
+          <span style={{ fontStyle: "italic" }}>I</span>
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Underline">
+        <IconButton onClick={handleUnderlineClick}>
+          <span style={{ textDecoration: "underline" }}>U</span>
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Strikethrough">
+        <IconButton onClick={handleStrikethroughClick}>
+          <del>S</del>
+        </IconButton>
+      </Tooltip>
+      <FormControl>
+        <Select value={fontSize} onChange={handleFontSizeChange}>
+          {["12px", "14px", "16px", "18px", "20px"].map((size) => (
+            <MenuItem key={size} value={size}>
+              {size}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <Tooltip title="Insert Image">
+        <IconButton component="label">
+          <Image />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            style={{ display: "none" }}
+          />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Align Left">
+        <IconButton onClick={() => handleAlignment("left")}>
+          <span style={{ textAlign: "left" }}>L</span>
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Align Center">
+        <IconButton onClick={() => handleAlignment("center")}>
+          <span style={{ textAlign: "center" }}>C</span>
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Align Right">
+        <IconButton onClick={() => handleAlignment("right")}>
+          <span style={{ textAlign: "right" }}>R</span>
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Align Justify">
+        <IconButton onClick={() => handleAlignment("justify")}>
+          <span style={{ textAlign: "justify" }}>J</span>
+        </IconButton>
+      </Tooltip>
     </div>
   );
 };

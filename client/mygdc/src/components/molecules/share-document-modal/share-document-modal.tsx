@@ -7,7 +7,7 @@ import {
     useState,
   } from "react";
   import { DocumentContext } from "../../../contexts/document-context";
-  import useAuth from "../../../hook/use-auth";
+  import useAuth from "../../../hooks/use-auth";
   import { ToastContext } from "../../../contexts/toast-context";
   import validator from "validator";
   import PermissionEnum from "../../../types/enums/permission-enum";

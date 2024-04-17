@@ -1,6 +1,6 @@
 window.global ||= window;
 import { useContext, useState } from "react";
-import useWindowSize from "../../hook/use-window-size";
+import useWindowSize from "../../hooks/use-window-size";
 import { Link, useNavigate } from "react-router-dom";
 import validator from "validator";
 import AuthService from "../../services/auth-service";

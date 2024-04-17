@@ -1,6 +1,6 @@
 window.global ||= window;
 import { FocusEvent, useContext, useRef, useState } from "react";
-import useAuth from "../../../hook/use-auth";
+import useAuth from "../../../hooks/use-auth";
 import { ToastContext } from "../../../contexts/toast-context";
 import DocumentService from "../../../services/document-service";
 import DocumentInterface from "../../../types/interfaces/document";
@@ -8,6 +8,7 @@ import { CSSTransition } from "react-transition-group";
 
 interface DocumentMenuButtonProps {
   documentId: number;
+  // eslint-disable-next-line @typescript-eslint/ban-types
   setDocuments: Function;
 }
 
