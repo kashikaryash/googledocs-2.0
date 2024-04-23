@@ -1,11 +1,11 @@
-import React, { useContext, useState, lazy, Suspense } from "react";
-import { ToastContext } from "../../../contexts/toast-context";
-import useAuth from "../../../hook/use-auth";
-import { useNavigate } from "react-router-dom";
-import DocumentService from "../../../services/document-service";
-import DocumentInterface from "../../../types/interfaces/document";
-import { PlusIcon } from "@heroicons/react/outline";
-import Spinner from "../spinner/spinner";
+import { useContext, useState } from 'react';
+import { ToastContext } from '../../../contexts/toast-context';
+import useAuth from '../../../hook/use-auth';
+import { useNavigate } from 'react-router-dom';
+import DocumentService from '../../../services/document-service';
+import DocumentInterface from '../../../types/interfaces/document';
+import { PlusIcon } from '@heroicons/react/outline';
+import Spinner from '../spinner/spinner';
 
 const CreateDocumentButton = () => {
   const { error } = useContext(ToastContext);
@@ -24,7 +24,7 @@ const CreateDocumentButton = () => {
 
       navigate(`/document/${id}`);
     } catch (err) {
-      error("Unable to create a new document. Please try again");
+      error('Unable to create a new document. Please try again');
     } finally {
       setLoading(false);
     }
@@ -38,10 +38,10 @@ const CreateDocumentButton = () => {
           <div className="space-y-2">
             <button
               disabled={loading}
-              onClick={() => handleDocumentCreateBtnClick()}
+              onClick={handleDocumentCreateBtnClick}
               className="h-52 w-40 bg-white border hover:border-blue-500 flex items-center justify-center"
             >
-              <span className={`${loading && "opacity-0"}`}>
+              <span className={`${loading && 'opacity-0'}`}>
                 <PlusIcon className="w-16 h-16 text-red-500"></PlusIcon>
               </span>
               {loading && <Spinner size="md" />}
@@ -54,14 +54,4 @@ const CreateDocumentButton = () => {
   );
 };
 
-const LazyCreateDocumentButton = lazy(() => import("./CreateDocumentButton"));
-
-const CreateDocumentButtonWithSuspense = () => {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <LazyCreateDocumentButton />
-    </Suspense>
-  );
-};
-
-export default CreateDocumentButtonWithSuspense;
+export default CreateDocumentButton;
