@@ -1,116 +1,36 @@
-import React, { useState } from "react";
-import {
-  IconButton,
-  Select,
-  MenuItem,
-  FormControl,
-  Tooltip,
-} from "@material-ui/core";
-import { Image } from "@material-ui/icons";
-import Quill from "quill";
-import "quill/dist/quill.snow.css";
+window.global ||= window;
+import { useContext } from "react";
+import { EditorContext } from "../../../contexts/editor-context";
+import { EditorState } from "draft-js";
+import IconButton from "../../atoms/icon-button/icon-button";
+import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/outline";
+import FontSelect from "../../atoms/font-select/font-select";
 
-interface EditorToolbarProps {
-  quill: Quill;
-  handleBoldClick: () => void;
-  handleItalicClick: () => void;
-  handleUnderlineClick: () => void;
-  handleStrikethroughClick: () => void;
-  handleBulletListClick: () => void;
-  handleNumberedListClick: () => void;
-  handleInsertImage: (imageUrl: string) => void;
-  handleFontSizeChange: (newFontSize: string) => void;
-  handlePageAlignment: (alignment: "left" | "center" | "right" | "justify") => void;
-}
+const EditorToolbar = () => {
+  const { editorState, setEditorState } = useContext(EditorContext);
 
-const EditorToolbar: React.FC<EditorToolbarProps> = ({ quill, handleBoldClick, handleItalicClick, handleUnderlineClick, handleStrikethroughClick}) => {
-  const [fontSize, setFontSize] = useState("12px");
-
-  const handleFontSizeChange = (e: React.ChangeEvent<{ value: unknown }>) => {
-    const size = e.target.value as string;
-    quill.format("size", size);
-    setFontSize(size);
+  const handleUndoBtnClick = () => {
+    setEditorState(EditorState.undo(editorState));
   };
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const imageUrl = reader.result as string;
-        const range = quill.getSelection();
-        quill.insertEmbed(range?.index || 0, "image", imageUrl);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleAlignment = (align: string) => {
-    quill.format("align", align);
+  const handleRedoBtnClick = () => {
+    setEditorState(EditorState.redo(editorState));
   };
 
   return (
-    <div>
-      <Tooltip title="Bold">
-        <IconButton onClick={handleBoldClick}>
-          <span style={{ fontWeight: "bold" }}>B</span>
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="Italic">
-        <IconButton onClick={handleItalicClick}>
-          <span style={{ fontStyle: "italic" }}>I</span>
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="Underline">
-        <IconButton onClick={handleUnderlineClick}>
-          <span style={{ textDecoration: "underline" }}>U</span>
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="Strikethrough">
-        <IconButton onClick={handleStrikethroughClick}>
-          <del>S</del>
-        </IconButton>
-      </Tooltip>
-      <FormControl>
-        <Select value={fontSize} onChange={handleFontSizeChange}>
-          {["12px", "14px", "16px", "18px", "20px"].map((size) => (
-            <MenuItem key={size} value={size}>
-              {size}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <Tooltip title="Insert Image">
-        <IconButton component="label">
-          <Image />
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            style={{ display: "none" }}
-          />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="Align Left">
-        <IconButton onClick={() => handleAlignment("left")}>
-          <span style={{ textAlign: "left" }}>L</span>
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="Align Center">
-        <IconButton onClick={() => handleAlignment("center")}>
-          <span style={{ textAlign: "center" }}>C</span>
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="Align Right">
-        <IconButton onClick={() => handleAlignment("right")}>
-          <span style={{ textAlign: "right" }}>R</span>
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="Align Justify">
-        <IconButton onClick={() => handleAlignment("justify")}>
-          <span style={{ textAlign: "justify" }}>J</span>
-        </IconButton>
-      </Tooltip>
+    <div className="w-full h-9 px-3 py-1 flex-shrink-0 flex items-center">
+      <IconButton
+        onClick={handleUndoBtnClick}
+        icon={<ArrowLeftIcon className="h-4 w-4" />}
+        tooltip="Undo"
+      />
+      <IconButton
+        onClick={handleRedoBtnClick}
+        icon={<ArrowRightIcon className="h-4 w-4" />}
+        tooltip="Redo"
+      />
+      <div className="h-5 border-1 border-1-gray-300 mx-2"></div>
+      <FontSelect />
     </div>
   );
 };

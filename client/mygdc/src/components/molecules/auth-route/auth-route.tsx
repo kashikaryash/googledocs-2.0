@@ -1,6 +1,6 @@
 window.global ||= window;
-import { useEffect, useCallback } from "react";
-import useAuth from "../../../hooks/use-auth";
+import { useEffect } from "react";
+import useAuth from "../../../hook/use-auth";
 import { Navigate } from "react-router-dom";
 
 interface AuthRouteProps {
@@ -10,13 +10,9 @@ interface AuthRouteProps {
 const AuthRoute = ({ element }: AuthRouteProps) => {
   const { loadingAuth, isAuthenticated, refreshAccessToken } = useAuth();
 
-  const handleRefreshAccessToken = useCallback(() => {
-    refreshAccessToken();
-  }, [refreshAccessToken]);
-
   useEffect(() => {
-    handleRefreshAccessToken();
-  }, [handleRefreshAccessToken]);
+    refreshAccessToken();
+  }, []);
 
   if (loadingAuth) {
     return <></>;

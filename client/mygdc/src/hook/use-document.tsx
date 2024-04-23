@@ -1,3 +1,4 @@
+window.global ||= window;
 import { useContext, useEffect, useState } from "react";
 import useAuth from "./use-auth";
 import { ToastContext } from "../contexts/toast-context";
@@ -9,16 +10,16 @@ const useDocument = (documentId: number) => {
   const { accessToken } = useAuth();
   const { error } = useContext(ToastContext);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<string[]>([]);
-  const [document, setDocument] = useState<DocumentInterface | null>(null);
+  const [errors, setErrors] = useState<Array<string>>([]);
+  const [document, setDocument] = useState<null | DocumentInterface>(null);
 
   const loadDocument = async (accessToken: string, documentId: number) => {
     setLoading(true);
 
     try {
       const response = await DocumentService.get(accessToken, documentId);
-      setDocument(response.data);
-    } catch (error: unknown) {
+      setDocument(response.data as DocumentInterface);
+    } catch (error: any) {
       if (axios.isAxiosError(error)) {
         const { response } = error as AxiosError;
         if (response?.status === 404) {
@@ -44,7 +45,7 @@ const useDocument = (documentId: number) => {
     if (accessToken === null) return;
 
     loadDocument(accessToken, documentId);
-  }, [accessToken, documentId, error]);
+  }, [accessToken, documentId]);
 
   useEffect(() => {
     if (errors.length) {
@@ -52,7 +53,8 @@ const useDocument = (documentId: number) => {
         error(err);
       });
     }
-  }, [errors, error]); 
+  }, [errors]);
+
   return {
     document,
     errors,

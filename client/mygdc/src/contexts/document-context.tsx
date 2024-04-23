@@ -9,7 +9,7 @@ import {
   } from "react";
   import DocumentInterface from "../types/interfaces/document";
   import { ToastContext } from "./toast-context";
-  import useAuth from "../hooks/use-auth";
+  import useAuth from "../hook/use-auth";
   import DocumentService from "../services/document-service";
   
   interface DocumentContextInterface {
@@ -86,7 +86,7 @@ import {
           error(err);
         });
       }
-    }, [error, errors]);
+    }, [errors]);
   
     return (
       <DocumentContext.Provider

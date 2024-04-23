@@ -4,7 +4,6 @@ import { useState } from "react";
 interface IconButtonProps {
   icon: JSX.Element;
   tooltip: string;
-  // eslint-disable-next-line @typescript-eslint/ban-types
   onClick: Function;
 }
 

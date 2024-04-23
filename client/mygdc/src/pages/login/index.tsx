@@ -1,10 +1,10 @@
 window.global ||= window;
 import { KeyboardEvent, useContext, useState } from "react";
 import TextField from "../../components/atoms/text-field/text-field";
-import useWindowSize from "../../hooks/use-window-size";
+import useWindowSize from "../../hook/use-window-size";
 import validator from "validator";
 import AuthService from "../../services/auth-service";
-import useAuth from "../../hooks/use-auth";
+import useAuth from "../../hook/use-auth";
 import { ToastContext } from "../../contexts/toast-context";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../components/atoms/logo/logo";
@@ -90,7 +90,7 @@ const Login = () => {
           />
           <p className="text-sm hover:underline font-semibold text-blue-500 text-left">
             <Link to="/register"
-            className="text-sm hover:underline font-semibold text-blue-500 text-left">Need an account?</Link>
+            className="text-sm hover:underline font-semibold text-blue-500 text-left">Need an account? - router to register</Link>
           </p>
           <TextField
             value={password}

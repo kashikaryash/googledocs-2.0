@@ -1,7 +1,7 @@
 window.global ||= window;
 import { useContext } from "react";
 import { ToastContext } from "../../../contexts/toast-context";
-import useWindowSize from "../../../hooks/use-window-size";
+import useWindowSize from "../../../hook/use-window-size";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import Toast from "../../atoms/toast/toast";
 

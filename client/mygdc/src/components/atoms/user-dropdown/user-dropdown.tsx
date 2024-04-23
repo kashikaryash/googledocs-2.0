@@ -1,9 +1,9 @@
 window.global ||= window;
 import { useContext, useRef, useState } from "react";
 import { ToastContext } from "../../../contexts/toast-context";
-import useAuth from "../../../hooks/use-auth";
+import useAuth from "../../../hook/use-auth";
 import { useNavigate } from "react-router-dom";
-import useRandomBackground from "../../../hooks/use-random-background";
+import useRandomBackground from "../../../hook/use-random-background";
 import { CSSTransition } from "react-transition-group";
 
 const UserDropDown = () => {

@@ -1,3 +1,4 @@
+window.global ||= window;
 import { useState } from "react";
 
 const useLocalStorage = <T,>(
@@ -19,9 +20,7 @@ const useLocalStorage = <T,>(
         value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);
       window.localStorage.setItem(key, JSON.stringify(valueToStore));
-    } catch (error) {
-      // Handle error here if needed
-    }
+    } catch (error) { }
   };
 
   return [storedValue, setValue];

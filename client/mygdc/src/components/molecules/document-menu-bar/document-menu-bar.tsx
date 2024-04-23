@@ -1,12 +1,12 @@
 window.global ||= window;
 import { ChangeEvent, FocusEvent, useContext } from "react";
-import useAuth from "../../../hooks/use-auth";
+import useAuth from "../../../hook/use-auth";
 import { DocumentContext } from "../../../contexts/document-context";
 import DocumentInterface from "../../../types/interfaces/document";
 import DocumentService from "../../../services/document-service";
 import Logo from "../../atoms/logo/logo";
 import UserDropDown from "../../atoms/user-dropdown/user-dropdown";
-import useRandomBackground from "../../../hooks/use-random-background";
+import useRandomBackground from "../../../hook/use-random-background";
 import ShareDocumentModal from "../share-document-modal/share-document-modal";
 
 const CurrentUsers = () => {

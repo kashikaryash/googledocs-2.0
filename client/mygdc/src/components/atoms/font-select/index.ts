@@ -1,3 +1,3 @@
-export const FONTS = ["Inter", "Roboto", "Open Sans","Verdana", "Times New Roman", "Arial"];
+export const FONTS = ["Inter", "Roboto", "Open Sans"];
 
 export { default } from "./font-select";

@@ -1,6 +1,6 @@
 window.global ||= window;
 import { useContext, useState } from "react";
-import useWindowSize from "../../hooks/use-window-size";
+import useWindowSize from "../../hook/use-window-size";
 import { Link, useNavigate } from "react-router-dom";
 import validator from "validator";
 import AuthService from "../../services/auth-service";
@@ -9,10 +9,6 @@ import axios, { AxiosError } from "axios";
 import TextField from "../../components/atoms/text-field/text-field";
 import Logo from "../../components/atoms/logo/logo";
 
-interface ApiError {
-  param: string;
-  msg: string;
- } 
 const Register = () => {
   const { widthStr, heightStr } = useWindowSize();
   const [email, setEmail] = useState("");
@@ -75,35 +71,34 @@ const Register = () => {
       });
       navigate("/login");
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        const { response } = err as AxiosError<{ errors: ApiError[] }>;
-        const errors = response?.data?.errors || [];
-       
-        const emailFieldErrors = errors
-           .filter((error: ApiError) => error.param === "email")
-           .map((error: ApiError) => error.msg);
-        const password1FieldErrors = errors
-           .filter((error: ApiError) => error.param === "password1")
-           .map((error: ApiError) => error.msg);
-        const password2FieldErrors = errors
-           .filter((error: ApiError) => error.param === "password2")
-           .map((error: ApiError) => error.msg);
-       
-        setEmailErrors(emailFieldErrors);
-        setPassword1Errors(password1FieldErrors);
-        setPassword2Errors(password2FieldErrors);
-       
-        if (
-           emailFieldErrors.length === 0 &&
-           password1FieldErrors.length === 0 &&
-           password2FieldErrors.length === 0
-        ) {
-           error("An unknown error has occurred. Please try again");
-        }
-       } else {
-        error("An unknown error has occurred. Please try again");
-       }
-       
+  if (axios.isAxiosError(err)) {
+    const { response } = err as AxiosError;
+    const errors = (response as any).data?.errors || [];
+
+    const emailFieldErrors = errors
+      .filter((error: any) => error.param === "email")
+      .map((error: any) => error.msg);
+    const password1FieldErrors = errors
+      .filter((error: any) => error.param === "password1")
+      .map((error: any) => error.msg);
+    const password2FieldErrors = errors
+      .filter((error: any) => error.param === "password2")
+      .map((error: any) => error.msg);
+
+    setEmailErrors(emailFieldErrors);
+    setPassword1Errors(password1FieldErrors);
+    setPassword2Errors(password2FieldErrors);
+
+    if (
+      emailFieldErrors.length === 0 &&
+      password1FieldErrors.length === 0 &&
+      password2FieldErrors.length === 0
+    ) {
+      error("An unknown error has occurred. Please try again");
+    }
+  } else {
+    error("An unknown error has occurred. Please try again");
+  }
 } finally {
   setLoading(false);
 }
