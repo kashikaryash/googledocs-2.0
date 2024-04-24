@@ -69,7 +69,7 @@ const Register = () => {
         body: "Please check your inbox to verify your email address",
         color: "success",
       });
-      navigate("/login");
+      navigate("/");
     } catch (err) {
   if (axios.isAxiosError(err)) {
     const { response } = err as AxiosError;

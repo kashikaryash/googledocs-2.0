@@ -35,7 +35,7 @@ const Document = () => {
   return (
     <div
       style={{ height: heightStr }}
-      className="w-full h-full bg-gray flex flex-col"
+      className="w-full h-full grid-bg flex flex-col"
     >
       <>
         <DocumentHeader documentHeaderRef={documentHeaderRef} />

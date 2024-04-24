@@ -116,7 +116,7 @@ const DocumentMenuBar = () => {
           </div>
         </div>
       </div>
-      <div className="flex items-center flex-shrink-0 pl-3 gap-x-4">
+      <div className="flex items-center flex-shrink-0 pl-3 gap-x-4 ">
         {document !== null && document.userId === userId && (
           <ShareDocumentModal />
         )}

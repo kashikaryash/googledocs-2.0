@@ -14,7 +14,7 @@ import Create from './pages/document/create';
 import { DocumentProvider } from './contexts/document-context';
 import { EditorProvider } from './contexts/editor-context';
 import Document from './pages/document'; // Import the Document component
-
+import "rabbitcss"
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
