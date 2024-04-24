@@ -35,7 +35,7 @@ const DocumentEditor = () => {
     const selectedText = editorState.getSelection().isCollapsed()
       ? null
       : editorState.getCurrentContent().getBlockForKey(editorState.getSelection().getStartKey()).getText();
-    
+
     if (selectedText) {
       try {
         const response = await fetch("http://localhost:5500/api/generate-response", {
@@ -45,11 +45,11 @@ const DocumentEditor = () => {
           },
           body: JSON.stringify({ message: selectedText })
         });
-  
+
         if (!response.ok) {
           throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`);
         }
-  
+
         const responseData = await response.json();
         const generatedText = responseData.response;
         const contentState = editorState.getCurrentContent();
@@ -63,7 +63,7 @@ const DocumentEditor = () => {
       }
     }
   };
-  
+
 
   return (
     <div
@@ -78,7 +78,14 @@ const DocumentEditor = () => {
         spellCheck={true}
         placeholder="Type here..."
       />
-      <button onClick={handleGenerateResponse} disabled={loading} className="absolute top-10 bg-red-500 right-0">Get Response</button>
+    <div className="absolute top-[200px] right-[100px] w-[400px] flex flex-col gap-5 p-8 rounded-lg shadow-lg bg-white">
+  <h2 className="text-4xl font-bold text-gray-900">Experience Generative AI</h2>
+  <p className="text-gray-600">Select text and click the generate button to get an AI response.</p>
+  <button onClick={handleGenerateResponse} disabled={loading} className="btn bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+    {loading ? 'Loading...' : 'Generate Response'}
+  </button>
+</div>
+
     </div>
   );
 };
