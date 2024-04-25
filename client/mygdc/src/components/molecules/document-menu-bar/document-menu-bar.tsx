@@ -1,5 +1,5 @@
 window.global ||= window;
-import { ChangeEvent, FocusEvent, useContext } from "react";
+import React, { ChangeEvent, FocusEvent, useCallback, useContext, useEffect, useState } from "react";
 import useAuth from "../../../hook/use-auth";
 import { DocumentContext } from "../../../contexts/document-context";
 import DocumentInterface from "../../../types/interfaces/document";
@@ -30,18 +30,18 @@ const CurrentUsers = () => {
     </>
   );
 };
-
-const DocumentMenuBar = () => {
+const DocumentMenuBar: React.FC = () => {
   const { accessToken, userId } = useAuth();
 
   const {
     document,
-    saving,
     setDocumentTitle,
     setDocument,
-    setSaving,
+    setSaving: setSavingContext,
     setErrors,
   } = useContext(DocumentContext);
+
+  const [saving, setSavingState] = useState<boolean>(false);
 
   const handleTitleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const title = event.target.value;
@@ -49,27 +49,65 @@ const DocumentMenuBar = () => {
   };
 
   const handleTitleInputBlur = async (event: FocusEvent<HTMLInputElement>) => {
-    if (accessToken === null || document === null) return;
+    if (!accessToken || !document) return;
 
-    setSaving(true);
+    setSavingState(true);
 
-    const title = (event.target as HTMLInputElement).value;
+    const title = event.target.value;
     const updatedDocument = {
       ...document,
       title,
     } as DocumentInterface;
-    console.log(saving);
-    console.log(document.id);
-    console.log(updatedDocument);
+
     try {
       await DocumentService.update(accessToken, updatedDocument);
+      setDocument(updatedDocument);
     } catch (error) {
       setErrors(["There was an error saving the document. Please try again."]);
     } finally {
-      setDocument(updatedDocument);
-      setSaving(false);
+      setSavingState(false);
     }
   };
+
+  const handleSave = useCallback(async () => {
+    if (!accessToken || !document) return;
+
+    setSavingState(true);
+
+    const updatedDocument = {
+      ...document,
+      title: document.title,
+    } as DocumentInterface;
+
+    try {
+      await DocumentService.update(accessToken, updatedDocument);
+      setDocument(updatedDocument);
+    } catch (error) {
+      setErrors(["There was an error saving the document. Please try again."]);
+    } finally {
+      setSavingState(false);
+    }
+  }, [accessToken, document, setDocument, setErrors]);
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.key === "s") {
+        event.preventDefault();
+        handleSave();
+      }
+    },
+    [handleSave]
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleKeyDown]);
+
+  const { backgroundColor } = useRandomBackground();
+
 
   return (
     <div className="w-full flex justify-between items-center px-3 pb-1 border-b">

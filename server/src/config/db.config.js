@@ -7,7 +7,7 @@ const sequelize_typescript_1 = require("sequelize-typescript");
 // const env_config_1 = __importDefault(require("./env.config"));
 // console.log("DATABASE_URL:", env_config_1.default.DATABASE_URL);
 
-const sequelize = new sequelize_typescript_1.Sequelize("postgres://euwsyyky:xsM1bFU3y780qVZ012FJ8OmBRIbW1UPK@kala.db.elephantsql.com/euwsyyky", {
+const sequelize = new sequelize_typescript_1.Sequelize("postgres://postgres.dowconoewklkcplajpzl:2vKuNQTo12TzaCezUAPyTIzHqf7xXNCo@aws-0-ap-south-1.pooler.supabase.com:5432/postgres", {
     dialect: "postgres",
     dialectOptions: {
         ssl: {

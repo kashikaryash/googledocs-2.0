@@ -4,12 +4,14 @@ import {
   convertToRaw,
   convertFromRaw,
   RawDraftContentState,
+  SelectionState,
 } from "draft-js";
 import {
   Dispatch,
   MutableRefObject,
   SetStateAction,
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useRef,
@@ -73,43 +75,48 @@ export const EditorProvider = ({ children }: EditorProviderInterface) => {
   const { error } = useContext(ToastContext);
   const { accessToken } = useAuth();
 
-  const focusEditor = () => {
-    if (editorRef === null || editorRef.current === null) return;
+  const focusEditor = useCallback(() => {
+    if (editorRef.current) {
+      const lastBlock = editorState.getCurrentContent().getLastBlock();
+      const newEditorState = EditorState.forceSelection(
+        editorState,
+        SelectionState.createEmpty(lastBlock.getKey()).merge({
+          anchorOffset: lastBlock.getLength(),
+          focusOffset: lastBlock.getLength(),
+        })
+      );
+  
+      setEditorState(newEditorState);
+      editorRef.current.focus();
+    }
+  }, [editorRef, editorState, setEditorState]);
 
-    editorRef.current.focus();
-  };
+
 
   //Send Changes
   const handleEditorChange = (editorState: EditorState) => {
-    setEditorState(EditorState.moveSelectionToEnd(editorState));
+  // Update local editor state
+  setEditorState(editorState);
 
-    if (socket === null) return;
-
+  // Emit changes via socket connection
+  if (socket !== null) {
     const content = convertToRaw(editorState.getCurrentContent());
-
     socket.current.emit(SocketEvent.SEND_CHANGES, content);
+  }
 
+  // Update document state and save if necessary
+  const content = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
+  if (document !== null && content !== document.content) {
     const updatedDocument = {
       ...document,
-      content: JSON.stringify(content),
-    } as DocumentInterface;
-
+      content: content,
+    };
     setDocument(updatedDocument);
-
-    if (document === null || JSON.stringify(content) === document.content)
-      return;
-
     setSaving(true);
+    saveDocument(updatedDocument).then(() => setSaving(false));
+  }
+};
 
-    let intervalId: NodeJS.Timeout | null = null;
-    if (intervalId !== null) {
-      clearInterval(intervalId);
-    }
-    intervalId = setInterval(async () => {
-      await saveDocument(updatedDocument);
-      if (intervalId) clearInterval(intervalId);
-    }, DEFAULT_SAVE_TIME);
-  };
 
   //Load document content
   useEffect(() => {
