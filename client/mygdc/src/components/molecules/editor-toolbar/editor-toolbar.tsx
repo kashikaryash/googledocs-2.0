@@ -3,20 +3,16 @@ import { EditorContext } from "../../../contexts/editor-context";
 import { Editor, EditorState, RichUtils, getDefaultKeyBinding, DraftHandleValue } from "draft-js";
 import "draft-js/dist/Draft.css";
 import IconButton from "../../atoms/icon-button/icon-button";
+import { MdFormatListBulleted, MdFormatListNumbered } from "react-icons/md";
+import { FaAlignCenter, FaAlignLeft, FaAlignRight, FaBold, FaItalic, FaUnderline } from "react-icons/fa";
+import { LuHeading1, LuHeading2, LuHeading3 } from "react-icons/lu";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/outline";
+import { FaLink } from "react-icons/fa6";
 
 const EditorToolbar = () => {
   const { editorState, setEditorState, currentFont } = useContext(EditorContext);
   const [showLinkInput, setShowLinkInput] = useState(false);
   const [linkURL, setLinkURL] = useState("");
-
-  const handleUndoBtnClick = () => {
-    setEditorState(EditorState.undo(editorState));
-  };
-
-  const handleRedoBtnClick = () => {
-    setEditorState(EditorState.redo(editorState));
-  };
 
   const handleKeyCommand = (
     command: string,
@@ -30,8 +26,18 @@ const EditorToolbar = () => {
     return "not-handled";
   };
 
+  const handleUndoBtnClick = () => {
+    setEditorState(EditorState.undo(editorState));
+  };
+
+  const handleRedoBtnClick = () => {
+    setEditorState(EditorState.redo(editorState));
+  };
+
   const toggleBlockType = (blockType: string) => {
-    setEditorState(RichUtils.toggleBlockType(editorState, blockType));
+    setEditorState(
+      RichUtils.toggleBlockType(editorState, blockType)
+    );
   };
 
   const toggleInlineStyle = (inlineStyle: string) => {
@@ -83,51 +89,38 @@ const EditorToolbar = () => {
           icon={<ArrowRightIcon className="h-5 w-5" />}
           tooltip="Redo"
         />
-        <div className="flex items-center space-x-2">
-          <button
-            className="text-xs font-semibold px-3 py-1 rounded-md border border-gray-300 hover:bg-gray-100"
-            onClick={() => toggleBlockType("header-one")}
-          >
-            H1
-          </button>
-          <button
-            className="text-xs font-semibold px-3 py-1 rounded-md border border-gray-300 hover:bg-gray-100"
-            onClick={() => toggleBlockType("header-two")}
-          >
-            H2
-          </button>
-          <button
-            className="text-xs font-semibold px-3 py-1 rounded-md border border-gray-300 hover:bg-gray-100"
-            onClick={() => toggleBlockType("header-three")}
-          >
-            H3
-          </button>
-          <button
-            className="text-xs font-semibold px-3 py-1 rounded-md border border-gray-300 hover:bg-gray-100"
-            onClick={() => toggleInlineStyle("BOLD")}
-          >
-            B
-          </button>
-          <button
-            className="text-xs font-semibold px-3 py-1 rounded-md border border-gray-300 hover:bg-gray-100"
+        <div className="flex items-center space-x-5">
+          <div className="flex items-center space-x-5 h-10">
+            <LuHeading1 size='1.55rem'
+              onClick={() => toggleBlockType("header-one")}
+            >
+            </LuHeading1>
+            <LuHeading2 size='1.55rem'
+              onClick={() => toggleBlockType("header-two")}
+            >
+            </LuHeading2>
+            <LuHeading3 size='1.55rem'
+              onClick={() => toggleBlockType("header-three")}
+            >
+            </LuHeading3>
+          </div>
+          <FaBold size='1.2rem'
+            onClick={() => toggleInlineStyle("BOLD")}>
+          </FaBold>
+          <FaItalic size='1.2rem'
             onClick={() => toggleInlineStyle("ITALIC")}
           >
-            I
-          </button>
-          <button
-            className="text-xs font-semibold px-3 py-1 rounded-md border border-gray-300 hover:bg-gray-100"
+          </FaItalic>
+          <FaUnderline size='1.2rem'
             onClick={() => toggleInlineStyle("UNDERLINE")}
           >
-            U
-          </button>
+          </FaUnderline>
         </div>
-        <div className="ml-4 flex items-center space-x-2">
-          <button
-            className="text-xs font-semibold px-3 py-1 rounded-md border border-gray-300 hover:bg-gray-100"
+        <div className="ml-4 flex items-center space-x-5">
+          <FaLink size='1.5rem'
             onClick={() => setShowLinkInput(!showLinkInput)}
           >
-            Link
-          </button>
+          </FaLink>
           {showLinkInput && (
             <>
               <input
@@ -143,41 +136,33 @@ const EditorToolbar = () => {
               >
                 Submit
               </button>
+
             </>
           )}
+
+          <FaAlignLeft size='1.3rem'
+            onClick={() => handleAlignment("left")}
+          >
+          </FaAlignLeft>
+          <FaAlignCenter size='1.3rem'
+            onClick={() => handleAlignment("center")}
+          >
+          </FaAlignCenter>
+          <FaAlignRight size='1.3rem'
+            onClick={() => handleAlignment("right")}
+          >
+
+          </FaAlignRight>
+          <MdFormatListBulleted size='1.6rem'
+            onClick={() => handleList("unordered-list-item")}
+          >
+          </MdFormatListBulleted>
+          <MdFormatListNumbered size='1.6rem'
+            onClick={() => handleList("ordered-list-item")}
+          >
+          </MdFormatListNumbered>
+
         </div>
-      </div>
-      <div className="flex items-center space-x-2">
-        <button
-          className="text-xs font-semibold px-3 py-1 rounded-md border border-gray-300 hover:bg-gray-100"
-          onClick={() => handleAlignment("left")}
-        >
-          Left
-        </button>
-        <button
-          className="text-xs font-semibold px-3 py-1 rounded-md border border-gray-300 hover:bg-gray-100"
-          onClick={() => handleAlignment("center")}
-        >
-          Center
-        </button>
-        <button
-          className="text-xs font-semibold px-3 py-1 rounded-md border border-gray-300 hover:bg-gray-100"
-          onClick={() => handleAlignment("right")}
-        >
-          Right
-        </button>
-        <button
-          className="text-xs font-semibold px-3 py-1 rounded-md border border-gray-300 hover:bg-gray-100"
-          onClick={() => handleList("unordered-list-item")}
-        >
-          Bulleted
-        </button>
-        <button
-          className="text-xs font-semibold px-3 py-1 rounded-md border border-gray-300 hover:bg-gray-100"
-          onClick={() => handleList("ordered-list-item")}
-        >
-          Numbered
-        </button>
       </div>
     </div>
   );
