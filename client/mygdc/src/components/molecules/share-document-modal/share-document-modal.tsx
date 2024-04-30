@@ -144,10 +144,10 @@ import {
     return (
       <Modal
         button={
-          <button className="btn-primary">
+          <button className="btn-primary flex flex-row gap-2 w-20 rounded-lg">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
+              className="h-10 w-5"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -157,7 +157,7 @@ import {
                 clipRule="evenodd"
               />
             </svg>
-            <span>Share</span>
+            <span className="py-2">Share</span>
           </button>
         }
         content={
