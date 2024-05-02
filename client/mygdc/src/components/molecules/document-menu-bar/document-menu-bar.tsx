@@ -129,6 +129,7 @@ const DocumentMenuBar: React.FC = () => {
             <button className="text-sm whitespace-nowrap px-2 py-1 font-medium hover:bg-gray-100 rounded-md">
               File
             </button>
+            
             <button className="text-sm whitespace-nowrap px-2 py-1 font-medium hover:bg-gray-100 rounded-md">
               Edit
             </button>
