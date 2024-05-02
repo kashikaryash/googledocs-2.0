@@ -16,8 +16,8 @@ interface TextFieldProps extends InputProps {
 }
 
 const TEXT_FIELD_CLASSES = {
-    primary: "bg-white dark:bg-slate-800",
-    secondary: "bg-slate-50 dark:bg-slate-700",
+    primary: "bg-white ",
+    secondary: "bg-slate-50 ",
 };
 
 const TextField = ({
@@ -90,7 +90,7 @@ const TextField = ({
             onBlur={() => setIsFocused(false)}
             placeholder={placeholder && placeholder}
             value={value}
-            className="w-full p-2 bg-white dark:bg-slate-800 rounded"
+            className="w-full p-2 bg-white dark:bg-slate-800 text-white rounded"
           />
         )}
         {errors.length ? (

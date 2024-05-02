@@ -97,7 +97,7 @@ const Login = () => {
             onInput={handleOnInputPassword}
             label="Password"
             type="password"
-            color="secondary"
+            color="primary"
             errors={passwordErrors}
           />
           <button

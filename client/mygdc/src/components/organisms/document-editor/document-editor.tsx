@@ -10,10 +10,6 @@ import useClipboard from "react-use-clipboard";
 const DocumentEditor = () => {
   const { editorState, setEditorState, editorRef, handleEditorChange } = useContext(EditorContext);
   const [loading, setLoading] = useState(false);
-  const [textToCopy, setTextToCopy] = useState('');
-  const [isCopied, setCopied] = useClipboard(textToCopy, {
-      successDuration:1000
-  });
   
 
   const handleKeyCommand = (command:string, editorState: EditorState) => {
@@ -102,27 +98,6 @@ const DocumentEditor = () => {
           {loading ? 'Loading...' : 'Generate Response'}
         </button>
       </div>
-
-      <div className="absolute top-[200px] left-[20px] w-[250px] flex flex-col gap-5 p-8 rounded-lg shadow-lg bg-white">
-                <h2 className="text-2xl font-bold text-gray-900">Speech to Text Converter</h2>
-                <p>Click on start and speak to convert it into text.</p>
-
-                <div className="main-content" onClick={() =>  setTextToCopy(transcript)}>
-                    {transcript}
-                </div>
-
-                <div className="btn-style flex flex-row gap-2">
-
-                    <button onClick={setCopied}>
-                        {isCopied ? 'Copied!' : 'Copy'}
-                    </button>
-                    <button className="bg-blue-500 w-12 h-8 rounded-lg text-white" onClick={startListening}>Start</button>
-                    <button className="bg-blue-500 w-12 h-8 rounded-lg text-white" onClick={SpeechRecognition.stopListening}>Stop</button>
-
-                </div>
-
-            </div>
-
 
     </div>
   );
